@@ -50,7 +50,7 @@ export default Mixin.create({
         let raw = params[key];
         let changedRaw = changed[key];
         let normalized = normalizeArrayQp(changedRaw);
-        let value = this.deserializeQueryParam(normalized, key, Array.isArray(normalized) ? 'array' : typeOf(raw));
+        let value = this.deserializeQueryParam(normalized, key, normalized.match(arrRegex) ? 'array' : typeOf(raw));
 
         res[key] = value;
         return res;
@@ -71,11 +71,8 @@ function normalizeArrayQp(val) {
   var matched = val && val.match(/^"\[.*,*\]"$/);
   if (matched) {
     try {
-      const arrayString = JSON.parse(matched)
-      return JSON.parse(arrayString)
-    } catch(e) {
-      // noop
-    }
+      return JSON.parse(matched);
+    } catch(e) {}
   }
 
   return val;
