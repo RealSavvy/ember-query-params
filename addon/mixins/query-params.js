@@ -2,6 +2,7 @@ import { run } from '@ember/runloop';
 import Mixin from '@ember/object/mixin';
 import { get } from '@ember/object';
 import { typeOf } from '@ember/utils';
+import { copy } from 'ember-copy';
 
 export default Mixin.create({
   init() {
@@ -19,7 +20,7 @@ export default Mixin.create({
       oldValue = item.value;
 
       if (typeOf(value) === 'array') {
-        item.value = value.copy();
+        item.value = copy(value);
         try {
           sameValues = JSON.stringify(value) === JSON.stringify(oldValue);
         } catch(e) {
